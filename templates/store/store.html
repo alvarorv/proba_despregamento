@@ -1,0 +1,129 @@
+﻿{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %} 
+<section class="section-pagetop bg">
+<div class="container">
+	{% if 'search' in request.path %}
+		<h2 class="title-page">Resultados de búsqueda</h2>
+	{% else %}
+		<h2 class="title-page">A tenda de Álvaro
+		</h2>
+	{% endif %}
+
+	
+</div> 
+</section>
+
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<aside class="col-md-3">
+		
+<div class="card">
+	<article class="filter-group">
+		<header class="card-header">
+			<a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+				<i class="icon-control fa fa-chevron-down"></i>
+				<h6 class="title">Categories</h6>
+			</a>
+		</header>
+		<div class="filter-content collapse show" id="collapse_1" style="">
+			<div class="card-body">
+				
+				<ul class="list-menu">
+				<li><a href="{% url 'store' %}">Todos los productos</a></li>
+				{% for category in links %}
+					<li><a href="{{ category.get_url }}">{{ category.category_name }}</a></li>
+				{% endfor %}
+				</ul>
+
+			</div> 
+		</div>
+	</article> 
+	
+	
+</div> 
+
+	</aside> 
+	<main class="col-md-9">
+
+<header class="border-bottom mb-4 pb-3">
+		<div class="form-inline">
+			<span class="mr-md-auto">Encontrados {{ product_count }} productos</span>
+			
+		</div>
+</header>
+
+<div class="row">
+	{% if products %}
+    {% for product in products %}
+	<div class="col-md-4">
+		<figure class="card card-product-grid">
+			<div class="img-wrap"> 
+				
+				<a href="{{ product.get_url }}"><img src="{{ product.images.url }}"></a>
+				
+			</div> <!-- img-wrap.// -->
+			<figcaption class="info-wrap">
+                            <div class="fix-height">
+                                <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+					<div class="price-wrap mt-2">
+						<span class="price">&euro;{{ product.price|floatformat:2 }}</span>
+						<del class="price-old">&euro;{{ product.original_price|floatformat:2 }}</del>
+					</div> <!-- price-wrap.// -->
+				</div>
+				<a href="{{ product.get_url }}" class="btn btn-block btn-primary">Ver detalles</a>
+			</figcaption>
+		</figure>
+	</div> <!-- col.// -->
+    {% endfor %}
+	{% else %}
+		<div class="col-md-12">
+			<div class="alert alert-danger" role="alert">
+				No se han encontrado productos.
+			</div>
+		</div>
+	{% endif %}
+</div> <!-- row end.// -->
+
+
+
+<nav class="mt-4" aria-label="Page navigation sample">
+	{% if products.has_other_pages %}
+	  <ul class="pagination">
+			{% if products.has_previous %}
+	    <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}">Anterior</a></li>
+			{% else %}
+			<li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+			{% endif %}
+
+			{% for i in products.paginator.page_range %}
+				{% if products.number == i %}
+	    		<li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+				{% else %}
+					<li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+				{% endif %}
+	    {% endfor %}
+
+			{% if products.has_next %}
+	    	<li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}">Siguiente</a></li>
+			{% else %}
+				<li class="page-item disabled"><a class="page-link" href="#">Siguiente</a></li>
+			{% endif %}
+	  </ul>
+	{% endif %}
+</nav>
+
+	</main> <!-- col.// -->
+
+</div>
+
+</div> 
+</section>
+
+{% endblock%}
+
+

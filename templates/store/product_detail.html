@@ -1,0 +1,58 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="section-content padding-y bg">
+<div class="container">
+
+<div class="card product-detail-card">
+    <div class="row no-gutters">
+        <aside class="col-md-6">
+<article class="gallery-wrap"> 
+    <div class="img-big-wrap">
+       <a href="#"><img src="{{ single_product.images.url }}" style="max-height:280px;width:100%;height:auto;object-fit:contain;"></a>
+    </div> </article> </aside>
+        <main class="col-md-6 border-left product-detail-section">
+            <article class="content-body">
+                <h2 class="title">{{ single_product.product_name }}</h2>
+
+                <div class="mb-3">
+                    <var class="price h4">&euro;{{ single_product.price|floatformat:2 }}</var>
+                </div>
+
+                <p>{{ single_product.description }}</p>
+
+                <hr>
+
+                {% if single_product.stock <= 0 %}
+                    <h5 class="text-danger mb-3">Producto agotado</h5>
+                {% endif %}
+
+                <div class="product-actions d-flex flex-wrap align-items-center">
+                    {% if in_cart %}
+                        <button type="button" class="btn btn-outline-success mr-2 mb-2" disabled>
+                            <span class="text">Añadido al carrito</span> <i class="fa fa-check"></i>
+                        </button>
+                        <a href="{% url 'cart' %}" class="btn btn-success mr-2 mb-2">
+                            <span class="text">Ver en el carrito</span> <i class="fa fa-eye"></i>
+                        </a>
+                    {% else %}
+                        {% if single_product.stock > 0 %}
+                            <a href="{% url 'add_cart' single_product.id %}" class="btn btn-primary mr-2 mb-2">
+                                <span class="text">Agregar al carrito</span> <i class="fa fa-shopping-cart"></i>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </article>
+        </main>
+    </div>
+</div>
+<br>
+
+</div>
+</section>
+
+{% endblock %}
+
+
+

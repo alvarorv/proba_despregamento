@@ -1,0 +1,133 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card profile-card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-2">Mi cuenta</h5>
+                        <p class="mb-1"><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong></p>
+                        <p class="mb-1">{{ request.user.email }}</p>
+                        <p class="mb-3">{{ request.user.phone_number }}</p>
+                        <a class="btn btn-primary btn-sm" href="{% url 'accounts:password_change' %}">Cambiar contraseña</a>
+                        <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary btn-sm ml-2">Salir</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Mis pedidos</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Pedido</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'accounts:user_order_detail' order.id %}">
+                                                {{ order.created_at|date:"Y-m-d H:i" }} - €{{ order.grand_total|floatformat:2 }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td class="text-center text-muted">No hay pedidos.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                {% if request.user.is_superadmin or request.user.is_admin or request.user.is_staff %}
+                <div class="card mt-3 admin-card">
+                    <div class="card-body">
+                        <h6 class="card-title mb-2">Administración</h6>
+                        {% if request.user.is_superadmin %}
+                        <p class="text-muted mb-2">Eres superadministrador y puedes listar usuarios.</p>
+                        {% endif %}
+                        <a class="btn btn-primary btn-sm" href="{% url 'accounts:admin_user_list' %}">Ver usuarios</a>
+                        <a class="btn btn-secondary btn-sm ml-2" href="{% url 'accounts:admin_product_list' %}">Ver productos</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Editar perfil</h4>
+
+                        {% if messages %}
+                          {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                          {% endfor %}
+                        {% endif %}
+
+                        <form method="post" action="{% url 'accounts:profile' %}">
+                            {% csrf_token %}
+
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="{{ form.first_name.id_for_label }}">Nombre</label>
+                                    {{ form.first_name }}
+                                    {% for error in form.first_name.errors %}
+                                      <small class="text-danger d-block">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                                <div class="col form-group">
+                                    <label for="{{ form.last_name.id_for_label }}">Apellidos</label>
+                                    {{ form.last_name }}
+                                    {% for error in form.last_name.errors %}
+                                      <small class="text-danger d-block">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.username.id_for_label }}">Usuario</label>
+                                {{ form.username }}
+                                {% for error in form.username.errors %}
+                                  <small class="text-danger d-block">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.email.id_for_label }}">Email</label>
+                                {{ form.email }}
+                                {% for error in form.email.errors %}
+                                  <small class="text-danger d-block">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="{{ form.phone_number.id_for_label }}">Teléfono</label>
+                                {{ form.phone_number }}
+                                {% for error in form.phone_number.errors %}
+                                  <small class="text-danger d-block">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary profile-save">Guardar cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
+

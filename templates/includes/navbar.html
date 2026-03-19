@@ -1,0 +1,192 @@
+﻿{% load static %}  
+<header class="section-header">
+
+
+<section class="header-main border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-2 col-md-3 col-6 d-none d-lg-block">
+                <a href="{% url 'home' %}" class="brand-wrap">
+                    <img class="logo" src="{% static 'images/logo.png' %}">
+                </a>
+            </div>
+
+            <div class="col-lg col-md col-6 flex-grow-0 d-none d-lg-block">
+                <nav class="nav-categories d-none d-md-flex">
+                    <a class="nav-link font-weight-bold" href="{% url 'store' %}">Todos</a>
+                    {% for category in links|slice:":3" %}
+                        <a class="nav-link text-dark" href="{{ category.get_url }}">{{ category.category_name }}</a>
+                    {% endfor %}
+                </nav>
+            </div> 
+
+            <div class="col-lg col-md-6 col-sm-12 col d-none d-lg-block">
+                <form action="{% url 'search' %}" class="search" method="get">
+                    <div class="input-group w-100">
+                        <input type="text" class="form-control" style="width:60%;" placeholder="Buscar" name="keyword">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="submit">
+                            <i class="fa fa-search"></i>
+                          </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3 d-none d-lg-block">
+                <div class="d-flex justify-content-end align-items-center mb-3 mb-lg-0">
+                    <div class="widget-header text-right">
+                        <small class="title text-muted">¡Bienvenido!</small>
+                        <div>
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'accounts:profile' %}">
+                                    {{ request.user.first_name|default:request.user.username }}
+                                </a>
+                                <span class="dark-transp"> | </span>
+                                <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link p-0 align-baseline">Salir</button>
+                                </form>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}">Entrar</a>
+                                <span class="dark-transp"> | </span>
+                                <a href="{% url 'accounts:register' %}">Registro</a>
+                            {% endif %}
+                        </div>
+                        {% if request.user.is_authenticated %}
+                            {% if request.user.is_superadmin or request.user.is_admin or request.user.is_staff %}
+                                <div><a href="{% url 'accounts:admin_user_list' %}">Usuarios</a></div>
+                                <div><a href="{% url 'accounts:admin_product_list' %}">Productos</a></div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'cart' %}" class="widget-header pl-3 ml-3">
+                        <div class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></div>
+                        <span class="badge badge-pill badge-danger notify">{{ cart_count }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mobile-logo d-lg-none border-top">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-12 text-center py-2">
+                <a href="{% url 'home' %}" class="brand-wrap d-inline-block">
+                    <img class="logo" src="{% static 'images/logo.png' %}">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mobile-toolbar d-flex d-lg-none border-top">
+    <div class="container">
+        <div class="row no-gutters text-center">
+            <div class="col-3">
+                <div class="dropdown w-100">
+                    <button class="mobile-toolbar__btn dropdown-toggle" type="button" id="mobileMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-bars"></i>
+                        <span>Menú</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-left w-100" aria-labelledby="mobileMenu">
+                        <a class="dropdown-item font-weight-bold" href="{% url 'store' %}">Todos</a>
+                        {% for category in links %}
+                            <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="dropdown w-100">
+                    <button class="mobile-toolbar__btn dropdown-toggle" type="button" id="mobileSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-search"></i>
+                        <span>Buscar</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right w-100 p-2" aria-labelledby="mobileSearch">
+                        <form action="{% url 'search' %}" method="get" class="mb-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Buscar" name="keyword">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'accounts:profile' %}" class="mobile-toolbar__btn">
+                        <i class="fa fa-user"></i>
+                        <span>{{ request.user.first_name|default:request.user.username }}</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="mobile-toolbar__btn">
+                        <i class="fa fa-user"></i>
+                        <span>Iniciar Sesión</span>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-3">
+                <a href="{% url 'cart' %}" class="mobile-toolbar__btn position-relative">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span>Carrito</span>
+                    <span class="badge badge-pill badge-danger mobile-toolbar__badge">{{ cart_count }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+</header>
+
+<style>
+    .nav-categories .nav-link {
+        padding: 0.5rem 1rem;
+        white-space: nowrap;
+        transition: color 0.2s;
+    }
+    .nav-categories .nav-link:hover {
+        color: #3167eb !important;
+    }
+
+    .mobile-toolbar {
+        background: #fff;
+        box-shadow: 0 -1px 0 #e9ecef;
+    }
+    .mobile-toolbar__btn {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        padding: 10px 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #212529;
+        font-size: 12px;
+        text-decoration: none;
+    }
+    .mobile-toolbar__btn i {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+    .mobile-toolbar__btn:focus,
+    .mobile-toolbar__btn:hover {
+        color: #3167eb;
+        text-decoration: none;
+    }
+    .mobile-toolbar .dropdown-toggle::after {
+        display: none;
+    }
+    .mobile-toolbar__badge {
+        position: absolute;
+        top: 6px;
+        right: 18px;
+        transform: translate(50%, 0);
+        font-size: 10px;
+    }
+</style>
+

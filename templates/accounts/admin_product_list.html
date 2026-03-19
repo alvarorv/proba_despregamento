@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="mb-0">Productos</h4>
+            <a class="btn btn-primary btn-sm" href="{% url 'accounts:admin_product_create' %}">Crear producto</a>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Disponible</th>
+                                <th>Categoria</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in products %}
+                            <tr>
+                                <td>{{ p.id }}</td>
+                                <td>
+                                    <a href="{% url 'accounts:admin_product_detail' p.id %}">{{ p.product_name }}</a>
+                                </td>
+                                <td>€{{ p.price|floatformat:2 }}</td>
+                                <td>{{ p.stock }}</td>
+                                <td>{% if p.is_available %}Si{% else %}No{% endif %}</td>
+                                <td>{{ p.category }}</td>
+                                <td class="text-right">
+                                    <a class="btn btn-light btn-sm" href="{% url 'accounts:admin_product_edit' p.id %}">Editar</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">No hay productos.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

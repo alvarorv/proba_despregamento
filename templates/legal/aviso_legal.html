@@ -1,0 +1,40 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <h1 class="mb-4">Aviso legal</h1>
+        <p class="text-muted">Este aviso legal regula el uso del sitio web y la relación entre el usuario y el titular.</p>
+
+        <h5>1. Identificación del titular</h5>
+        <ul class="list-unstyled">
+            <li><strong>Titular:</strong> {{ legal.owner_name }}</li>
+            <li><strong>Nombre comercial:</strong> {{ legal.business_name }}</li>
+            <li><strong>NIF/CIF:</strong> {{ legal.nif }}</li>
+            <li><strong>Domicilio:</strong> {{ legal.address }}</li>
+            <li><strong>Correo electrónico:</strong> {{ legal.email }}</li>
+            <li><strong>Teléfono:</strong> {{ legal.phone }}</li>
+            <li><strong>Registro mercantil:</strong> {{ legal.registry }}</li>
+            <li><strong>Dominio:</strong> {{ legal.domain }}</li>
+        </ul>
+
+        <h5>2. Condiciones de uso</h5>
+        <p>El acceso y uso de este sitio web atribuye la condición de usuario e implica la aceptación de las presentes condiciones. El usuario se compromete a hacer un uso adecuado de los contenidos y servicios y a no emplearlos para realizar actividades ilícitas o contrarias a la buena fe y al orden público.</p>
+
+        <h5>3. Propiedad intelectual e industrial</h5>
+        <p>Los contenidos del sitio web (textos, imágenes, marcas, logotipos, archivos, diseño, estructura, código, etc.) son titularidad del titular o de terceros que han autorizado su uso. Queda prohibida su reproducción, distribución o transformación sin autorización expresa.</p>
+
+        <h5>4. Enlaces externos</h5>
+        <p>El sitio puede contener enlaces a páginas de terceros. El titular no se responsabiliza del contenido ni de la disponibilidad de dichos sitios.</p>
+
+        <h5>5. Responsabilidad</h5>
+        <p>El titular no se hace responsable de los daños o perjuicios derivados del uso del sitio web, ni de la falta de disponibilidad temporal o de la presencia de virus u otros elementos que puedan causar alteraciones en los sistemas informáticos del usuario.</p>
+
+        <h5>6. Protección de datos y cookies</h5>
+        <p>El tratamiento de datos personales, cuando proceda, se realiza conforme a la normativa vigente. Consulta la <a href="{% url 'politica_cookies' %}">Política de Cookies</a> y, si aplica, la política de privacidad.</p>
+
+        <h5>7. Legislación aplicable y jurisdicción</h5>
+        <p>La relación entre el titular y el usuario se regirá por la legislación española. En caso de controversia, las partes se someterán a los juzgados y tribunales del domicilio del usuario o, en su defecto, a los de Santiago de Compostela.</p>
+    </div>
+</section>
+{% endblock %}

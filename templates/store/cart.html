@@ -1,0 +1,99 @@
+﻿{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg">
+<div class="container">
+
+{% if not cart_items %}
+    <h2 class="text-center">El carrito está vacío</h2>
+    <br>
+    <div class="text-center">
+        <a href="{% url 'store' %}" class="btn btn-primary">Ir a la tienda</a>
+    </div>
+{%else%}
+
+
+
+<div class="row">
+    <aside class="col-lg-9">
+<div class="card">
+<table class="table table-borderless table-shopping-cart">
+<thead class="text-muted">
+<tr class="small text-uppercase">
+  <th scope="col">Producto</th>
+  <th scope="col" width="120">Cantidad</th>
+  <th scope="col" width="120">Precio</th>
+  <th scope="col" class="text-right" width="200"> </th>
+</tr>
+</thead>
+<tbody>
+
+{% for cart_item in cart_items %}
+<tr>
+    <td>
+        <figure class="itemside align-items-center">
+            <div class="aside"><img src="{{ cart_item.product.images.url }}" class="img-sm"></div>
+            <figcaption class="info">
+                <a href="{{ cart_item.product.get_url }}" class="title text-dark">{{ cart_item.product.product_name }}</a>
+                
+            </figcaption>
+        </figure>
+    </td>
+    <td> 
+        <div class="col"> 
+                        <div class="input-group input-spinner">
+                            <div class="input-group-prepend">
+                            <a class="btn btn-light" type="button" id="button-plus" href="{% url 'remove_cart' cart_item.product.id %}"> <i class="fa fa-minus"></i> </a>
+                            </div>
+                            <input type="text" class="form-control"  value="{{ cart_item.quantity }}" style="width: 50px;">
+                            <div class="input-group-append">
+                            <a class="btn btn-light" type="button" id="button-minus" href="{% url 'add_cart' cart_item.product.id %}"> <i class="fa fa-plus"></i> </a>
+                            </div>
+                        </div> </div> </td>
+    <td> 
+        <div class="price-wrap"> 
+            <var class="price">&euro;{{ cart_item.sub_total|floatformat:2 }}</var> 
+            <small class="text-muted"> &euro;{{ cart_item.product.price|floatformat:2 }} cada uno</small> 
+        </div> </td>
+    <td class="text-right"> 
+    <a href="{% url 'remove_cart' cart_item.product.id %}" class="btn btn-danger"> Eliminar</a>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div> </aside> <aside class="col-lg-3">
+
+        <div class="card">
+        <div class="card-body">
+            <dl class="dlist-align">
+              <dt>Precio total:</dt>
+              <dd class="text-right"> &euro;{{ total|floatformat:2 }}</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Impuesto:</dt>
+              <dd class="text-right"> &euro;{{ tax|floatformat:2 }}</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Total:</dt>
+              <dd class="text-right text-dark b"><strong>&euro;{{ grand_total|floatformat:2 }}</strong></dd>
+            </dl>
+            <hr>
+            <p class="text-center mb-3">
+                <img src="{% static 'images/misc/payments.png' %}" height="26">
+            </p>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'checkout' %}" class="btn btn-primary btn-block cart-pay-btn"> Pagar </a>
+            {% endif %}
+            <a href="{% url 'store' %}" class="btn btn-secondary btn-block cart-continue-btn">Continuar comprando</a>
+        </div> </div> </aside> </div> {%endif%} </div> </section>
+
+{% endblock %}
+
+
+
+
+

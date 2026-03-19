@@ -1,0 +1,48 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <h4 class="mb-4">Usuarios registrados</h4>
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Activo</th>
+                                <th>Superadmin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in users %}
+                            <tr>
+                                <td>{{ u.id }}</td>
+                                <td>
+                                    <a href="{% url 'accounts:admin_user_detail' u.id %}">
+                                        {{ u.first_name }} {{ u.last_name }}
+                                    </a>
+                                </td>
+                                <td>{{ u.username }}</td>
+                                <td>{{ u.email }}</td>
+                                <td>{% if u.is_active %}Sí{% else %}No{% endif %}</td>
+                                <td>{% if u.is_superadmin %}Sí{% else %}No{% endif %}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No hay usuarios.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

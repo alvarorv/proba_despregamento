@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <h4 class="mb-4">Detalle de producto</h4>
+        <div class="card admin-product-detail-card">
+            <div class="card-body">
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                  {% endfor %}
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-4">
+                        {% if product.images %}
+                            <img src="{{ product.images.url }}" class="img-fluid" alt="{{ product.product_name }}">
+                        {% else %}
+                            <div class="text-muted">Sin imagen</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-4">ID</dt>
+                            <dd class="col-sm-8">{{ product.id }}</dd>
+
+                            <dt class="col-sm-4">Nombre</dt>
+                            <dd class="col-sm-8">{{ product.product_name }}</dd>
+
+                            <dt class="col-sm-4">Slug</dt>
+                            <dd class="col-sm-8">{{ product.slug }}</dd>
+
+                            <dt class="col-sm-4">Categoria</dt>
+                            <dd class="col-sm-8">{{ product.category }}</dd>
+
+                            <dt class="col-sm-4">Precio</dt>
+                            <dd class="col-sm-8">€{{ product.price|floatformat:2 }}</dd>
+
+                            <dt class="col-sm-4">Stock</dt>
+                            <dd class="col-sm-8">{{ product.stock }}</dd>
+
+                            <dt class="col-sm-4">Disponible</dt>
+                            <dd class="col-sm-8">{% if product.is_available %}Si{% else %}No{% endif %}</dd>
+
+                            <dt class="col-sm-4">Descripcion</dt>
+                            <dd class="col-sm-8">{{ product.description|default:"-" }}</dd>
+
+                            <dt class="col-sm-4">Creado</dt>
+                            <dd class="col-sm-8">{{ product.created_date }}</dd>
+
+                            <dt class="col-sm-4">Modificado</dt>
+                            <dd class="col-sm-8">{{ product.modified_date }}</dd>
+                        </dl>
+                        <a class="btn btn-secondary" href="{% url 'accounts:admin_product_list' %}">Volver</a>
+                        <a class="btn btn-primary" href="{% url 'accounts:admin_product_edit' product.id %}">Editar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

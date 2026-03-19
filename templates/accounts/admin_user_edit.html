@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <h4 class="mb-4">Editar usuario</h4>
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{% url 'accounts:admin_user_edit' user_obj.id %}">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label for="{{ form.first_name.id_for_label }}">Nombre</label>
+                            {{ form.first_name }}
+                            {% for error in form.first_name.errors %}
+                              <small class="text-danger d-block">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                        <div class="col form-group">
+                            <label for="{{ form.last_name.id_for_label }}">Apellidos</label>
+                            {{ form.last_name }}
+                            {% for error in form.last_name.errors %}
+                              <small class="text-danger d-block">{{ error }}</small>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">Usuario</label>
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.phone_number.id_for_label }}">Teléfono</label>
+                        {{ form.phone_number }}
+                        {% for error in form.phone_number.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            {{ form.is_active }}
+                            <label class="form-check-label" for="{{ form.is_active.id_for_label }}">Activo</label>
+                        </div>
+                        <div class="form-check">
+                            {{ form.is_admin }}
+                            <label class="form-check-label" for="{{ form.is_admin.id_for_label }}">Administrador</label>
+                        </div>
+                        <div class="form-check">
+                            {{ form.is_staff }}
+                            <label class="form-check-label" for="{{ form.is_staff.id_for_label }}">Personal</label>
+                        </div>
+                        <div class="form-check">
+                            {{ form.is_superadmin }}
+                            <label class="form-check-label" for="{{ form.is_superadmin.id_for_label }}">Superadministrador</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <a class="btn btn-light ml-2" href="{% url 'accounts:admin_user_detail' user_obj.id %}">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

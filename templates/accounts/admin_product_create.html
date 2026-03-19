@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y">
+    <div class="container">
+        <h4 class="mb-4">Crear producto</h4>
+        <div class="card">
+            <div class="card-body">
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                  {% endfor %}
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="{{ form.product_name.id_for_label }}">Nombre</label>
+                        {{ form.product_name }}
+                        {% for error in form.product_name.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.slug.id_for_label }}">Slug</label>
+                        {{ form.slug }}
+                        {% for error in form.slug.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.category.id_for_label }}">Categoria</label>
+                        {{ form.category }}
+                        {% for error in form.category.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.price.id_for_label }}">Precio</label>
+                        {{ form.price }}
+                        {% for error in form.price.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.stock.id_for_label }}">Stock</label>
+                        {{ form.stock }}
+                        {% for error in form.stock.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.is_available.id_for_label }}">Disponible</label>
+                        {{ form.is_available }}
+                        {% for error in form.is_available.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.images.id_for_label }}">Imagen</label>
+                        {{ form.images }}
+                        {% for error in form.images.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.description.id_for_label }}">Descripcion</label>
+                        {{ form.description }}
+                        {% for error in form.description.errors %}
+                          <small class="text-danger d-block">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                        <a class="btn btn-light ml-2" href="{% url 'accounts:admin_product_list' %}">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

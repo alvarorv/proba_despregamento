@@ -1,0 +1,19 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="mb-3">Confirmar pago</h2>
+                        <a href="{% url 'store' %}" class="btn btn-primary btn-block payment-accept-btn">Aceptar pago</a>
+                        <a href="{% url 'checkout' %}" class="btn btn-secondary btn-block payment-back-btn">Volver a finalizar compra</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
